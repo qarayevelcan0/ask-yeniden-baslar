@@ -1,139 +1,162 @@
 
-"use client";
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-import { useState } from "react";
+html,
+body {
+  min-height: 100%;
+}
 
-const initialPlayers = [
-  "Oyunçu 1",
-  "Oyunçu 2",
-  "Oyunçu 3",
-  "Oyunçu 4"
-];
+body {
+  background: #120b18;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
 
-export default function Home() {
-  const [players, setPlayers] = useState(initialPlayers);
-  const [selected, setSelected] = useState("");
-  const [spinning, setSpinning] = useState(false);
-  const [roomCode, setRoomCode] = useState("ASK2026");
+button,
+input {
+  font: inherit;
+}
 
-  function spinBottle() {
-    if (spinning) return;
+button {
+  cursor: pointer;
+}
 
-    setSpinning(true);
-    setSelected("");
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-    const winner =
-      players[Math.floor(Math.random() * players.length)];
+.main {
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top, #482044 0, transparent 45%),
+    #120b18;
+}
 
-    window.setTimeout(() => {
-      setSelected(winner);
-      setSpinning(false);
-    }, 2000);
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.logo {
+  color: #ffb6d9;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.wallet {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wallet span,
+.panel {
+  padding: 14px 18px;
+  border: 1px solid #75446d;
+  border-radius: 14px;
+  background: #28182e;
+}
+
+.hero {
+  text-align: center;
+  padding: 30px 12px;
+}
+
+.hero h1 {
+  color: #ffd1e7;
+  font-size: clamp(30px, 6vw, 52px);
+  margin-bottom: 12px;
+}
+
+.hero p {
+  color: #d8c5d8;
+  line-height: 1.6;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.table {
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  border: 5px solid #b77c9c;
+  border-radius: 50%;
+  background: radial-gradient(#713c65, #321b38);
+  box-shadow: 0 0 35px #0008;
+}
+
+.bottle {
+  font-size: 90px;
+  line-height: 1;
+  transition: transform 0.5s;
+}
+
+.spin-button {
+  border: 0;
+  border-radius: 30px;
+  padding: 15px 35px;
+  color: #321326;
+  background: linear-gradient(135deg, #ffd1e7, #e99bc5);
+  font-weight: 800;
+}
+
+.spin-button:hover {
+  filter: brightness(1.1);
+}
+
+.players {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.player {
+  padding: 18px;
+  text-align: center;
+  border: 1px solid #75446d;
+  border-radius: 14px;
+  background: #28182e;
+}
+
+.player strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #ffd1e7;
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 14px;
   }
 
-  function changePlayer(index: number, value: string) {
-    setPlayers((current) =>
-      current.map((player, i) => (i === index ? value : player))
-    );
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  return (
-    <main className="main">
-      <div className="container">
-        <header className="header">
-          <div className="logo">❤️ Aşk yeniden başlar</div>
-          <div className="wallet">
-            <span>🪙 1000 Gold</span>
-            <span>💎 100 Diamond</span>
-          </div>
-        </header>
-
-        <section className="hero">
-          <h1>Aşk yeniden başlar</h1>
-          <p>
-            Dostlarınla bir araya gəl, şüşəni fırlat və
-            əyləncəyə başla!
-          </p>
-        </section>
-
-        <section className="game">
-          <div className="panel">
-            <h2 style={{ textAlign: "center", marginBottom: 18 }}>
-              🍾 Şüşə oyunu
-            </h2>
-
-            <div className="table">
-              <div
-                className="bottle"
-                style={{
-                  transform: spinning
-                    ? "rotate(1440deg)"
-                    : "rotate(0deg)"
-                }}
-              >
-                🍾
-              </div>
-
-              <button
-                className="spin-button"
-                onClick={spinBottle}
-                disabled={spinning}
-              >
-                {spinning ? "Fırlanır..." : "Şüşəni fırlat"}
-              </button>
-            </div>
-
-            {selected && (
-              <h2 style={{ textAlign: "center", marginTop: 20 }}>
-                ❤️ Seçilən oyunçu: {selected}
-              </h2>
-            )}
-          </div>
-
-          <div className="panel">
-            <h2 style={{ marginBottom: 16 }}>👥 Oyunçular</h2>
-
-            <div className="players">
-              {players.map((player, index) => (
-                <label className="player" key={index}>
-                  <strong>Oyunçu {index + 1}</strong>
-                  <input
-                    value={player}
-                    onChange={(event) =>
-                      changePlayer(index, event.target.value)
-                    }
-                    aria-label={`Oyunçu ${index + 1}`}
-                    style={{
-                      width: "100%",
-                      padding: 8,
-                      borderRadius: 8,
-                      border: "1px solid #75446d",
-                      background: "#120b18",
-                      color: "white"
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="panel">
-            <h2>🏠 Oyun otağı</h2>
-            <p style={{ marginTop: 12 }}>Otaq kodu: {roomCode}</p>
-            <button
-              className="spin-button"
-              style={{ marginTop: 14 }}
-              onClick={() =>
-                setRoomCode(
-                  "ASK" + Math.floor(1000 + Math.random() * 9000)
-                )
-              }
-            >
-              Yeni otaq kodu
-            </button>
-          </div>
-        </section>
-      </div>
-    </main>
-  );
+  .table {
+    min-height: 280px;
+  }
 }
